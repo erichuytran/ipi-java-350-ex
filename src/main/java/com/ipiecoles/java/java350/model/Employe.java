@@ -58,6 +58,12 @@ public class Employe {
         return Entreprise.NB_CONGES_BASE + this.getNombreAnneeAnciennete();
     }
 
+
+    /**
+     *
+     * @param d
+     * @return
+     */
     public Integer getNbRtt(){
         return getNbRtt(LocalDate.now());
     }
