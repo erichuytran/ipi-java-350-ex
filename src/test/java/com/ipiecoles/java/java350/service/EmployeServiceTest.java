@@ -7,10 +7,7 @@ import com.ipiecoles.java.java350.repository.EmployeRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,7 +39,10 @@ class EmployeServiceTest {
         // Simuler que la recherche par matricule ne renvoie pas de résultats
         Mockito.when(employeRepository.findByMatricule("T00001")).thenReturn(null);
         // When
+
+        Mockito.when(employeRepository.save(Mockito.any(Employe.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
         employeService.embaucheEmploye(nom, prenom, poste, niveauEtude, tempsPartiel);
+
         // Then
         ArgumentCaptor<Employe> employeArgumentCaptor = ArgumentCaptor.forClass(Employe.class);
 //        Mockito.verify(employeRepository, Mockito.times(1)).save(employeArgumentCaptor.capture());
