@@ -34,13 +34,14 @@ class EmployeServiceTest {
         Poste poste = Poste.TECHNICIEN;
         NiveauEtude niveauEtude = NiveauEtude.BTS_IUT;
         Double tempsPartiel = 1.0;
+
+        Mockito.when(employeRepository.save(Mockito.any(Employe.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
+
         // Simuler qu'aucun employé n'est présent (ou du moins aucun matricule)
         Mockito.when(employeRepository.findLastMatricule()).thenReturn(null);
         // Simuler que la recherche par matricule ne renvoie pas de résultats
         Mockito.when(employeRepository.findByMatricule("T00001")).thenReturn(null);
         // When
-
-        Mockito.when(employeRepository.save(Mockito.any(Employe.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
         employeService.embaucheEmploye(nom, prenom, poste, niveauEtude, tempsPartiel);
 
         // Then
