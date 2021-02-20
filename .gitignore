@@ -27,3 +27,5 @@ HELP.md
 
 mvnw*
 .mvn
+
+error.log

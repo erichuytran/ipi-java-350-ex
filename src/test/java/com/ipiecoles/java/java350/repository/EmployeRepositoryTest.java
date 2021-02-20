@@ -11,13 +11,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 
 @SpringBootTest
-public class EmployeRepositoryTest {
+class EmployeRepositoryTest {
 
     @Autowired
     EmployeRepository employeRepository;
 
     @Test
-    public void testFindLastMatricule0Employe(){
+    void testFindLastMatricule0Employe(){
         // Given
 
         // When
@@ -28,7 +28,7 @@ public class EmployeRepositoryTest {
     }
 
     @Test
-    public void testFindLastMatricule1Employe() {
+    void testFindLastMatricule1Employe() {
         // Given
         // Inserer des données en base
         employeRepository.save(new Employe("Doe", "John", "T12345", LocalDate.now(), 1500d, 1, 1.0));
@@ -42,7 +42,7 @@ public class EmployeRepositoryTest {
     }
 
     @Test
-    public void testFindLastMatriculeNEmploye() {
+    void testFindLastMatriculeNEmploye() {
         // Given
         // Inserer des données en base
         employeRepository.save(new Employe("Doe", "John", "T12345", LocalDate.now(), 1500d, 1, 1.0));
