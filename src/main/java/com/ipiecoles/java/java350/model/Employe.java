@@ -1,5 +1,8 @@
 package com.ipiecoles.java.java350.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,9 +11,11 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Objects;
 
+
 @Entity
 public class Employe {
 
+    private static Logger logger = LoggerFactory.getLogger(Employe.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -144,7 +149,18 @@ public class Employe {
     }
 
     //Augmenter salaire
-    //public void augmenterSalaire(double pourcentage){}
+    public void augmenterSalaire(double pourcentage) throws IllegalArgumentException{
+        // Si pourcentage négatif,
+        // Alors ne pas toucher au salaire de base et renvoyer une exception
+        if (pourcentage >= 0) {
+            this.salaire += pourcentage/100 * this.salaire;
+            logger.info("L'employe {} a reçu une augmentation de {}%. Nouveau salaire : {}", matricule, pourcentage, salaire);
+        } else {
+            logger.error("Le pourcentage doit être positif !");
+            throw new IllegalArgumentException("Le pourcentage doit être positif !");
+        }
+
+    }
 
     public Long getId() {
         return id;

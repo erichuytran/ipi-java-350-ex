@@ -2,7 +2,7 @@ package com.ipiecoles.java.java350.model;
 
 import com.ipiecoles.java.java350.model.Employe;
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.runner.RunWith;
@@ -79,6 +79,51 @@ public class EmployeTest {
         Assertions.assertThat(prime).isEqualTo(primeAttendue);
 
     }
+
+    @Test
+    public void testAugmenterSalaireBy3Percent() {
+        Employe employe = new Employe("Doe", "John", "T12345", LocalDate.now(), 1500d, 1, 1.0);
+
+        Double salaireExpected = employe.getSalaire() * 3/100 + employe.getSalaire();
+        employe.augmenterSalaire(3);
+
+        Assertions.assertThat(employe.getSalaire()).isEqualTo(salaireExpected);
+    }
+
+    @Test
+    public void testAugmenterSalaireBy0Percent() {
+        Employe employe = new Employe("Doe", "John", "T12345", LocalDate.now(), 1500d, 1, 1.0);
+
+        Double salaireBefore = employe.getSalaire();
+        employe.augmenterSalaire(0);
+
+        Assertions.assertThat(employe.getSalaire()).isEqualTo(salaireBefore);
+    }
+
+    @Test
+    public void testAugmenterSalaireByDot3Percent() {
+        Employe employe = new Employe("Doe", "John", "T12345", LocalDate.now(), 1500d, 1, 1.0);
+
+        Double salaireExpected = employe.getSalaire() * 0.3/100 + employe.getSalaire();
+
+        employe.augmenterSalaire(0.3);
+
+        Assertions.assertThat(employe.getSalaire()).isEqualTo(salaireExpected);
+    }
+
+    @Test
+    public void testAugmenterSalaireByNegativePercent() {
+        Employe employe = new Employe("Doe", "John", "T12345", LocalDate.now(), 1500d, 1, 1.0);
+
+        Double salaireBefore = employe.getSalaire();
+        try {
+            employe.augmenterSalaire(-10);
+            Assertions.fail("augmenterSalaire aurait du lancer une exception");
+        } catch (IllegalArgumentException e){
+            Assertions.assertThat(employe.getSalaire()).isEqualTo(salaireBefore);
+        }
+    }
+
 
 //    @Test
 //    public void testGetPrimeAnnuelleMatriculeNull() {
