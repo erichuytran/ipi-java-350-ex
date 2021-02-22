@@ -121,6 +121,24 @@ public class EmployeTest {
         }
     }
 
+    @ParameterizedTest(name = "year {0}, nbDaysRttExpected {1}, tempsPartiel {2}")
+    @CsvSource({
+            "2019, 8, 1",
+            "2021, 10, 1",
+            "2022, 10, 1",
+            "2032, 11, 1",
+            "2019, 4, 0.5",
+            "2021, 5, 0.5",
+            "2022, 5, 0.5",
+            "2032, 6, 0.5"
+    })
+    void testGetNbRtt(Integer year, Integer nbDaysRttExpected, Double tempsPartiel) {
+        Employe employe = new Employe("Doe", "John", "T12345", LocalDate.now(), 1500d, 1, tempsPartiel);
+
+        Integer nbDaysRtt = employe.getNbRtt(LocalDate.of(year, 1, 01));
+
+        Assertions.assertThat(nbDaysRtt).isEqualTo(nbDaysRttExpected);
+    }
 
 //    @Test
 //    void testGetPrimeAnnuelleMatriculeNull() {
