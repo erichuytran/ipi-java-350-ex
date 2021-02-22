@@ -1,19 +1,16 @@
 package com.ipiecoles.java.java350.model;
 
-import com.ipiecoles.java.java350.model.Employe;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import java.time.LocalDate;
 
 public class EmployeTest {
 
     @Test
-    public void testGetNombreAncienneteDateEmbaucheSupNow() {
+    void testGetNombreAncienneteDateEmbaucheSupNow() {
         // Given
         Employe employe = new Employe("Doe", "John", "T12345", LocalDate.now().plusYears(1), 1500d, 1, 1.0);
 
@@ -25,7 +22,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testGetNombreAncienneteDateEmbaucheInfNow() {
+    void testGetNombreAncienneteDateEmbaucheInfNow() {
         // Given
         Employe employe = new Employe("Doe", "John", "T12345", LocalDate.now().minusYears(2), 1500d, 1, 1.0);
 
@@ -37,7 +34,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testGetNombreAncienneteDateEmbaucheCurrYear() {
+    void testGetNombreAncienneteDateEmbaucheCurrYear() {
         // Given
         Employe employe = new Employe("Doe", "John", "T12345", LocalDate.now(), 1500d, 1, 1.0);
 
@@ -49,7 +46,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testGetNombreAncienneteDateEmbaucheIsNull() {
+    void testGetNombreAncienneteDateEmbaucheIsNull() {
         // Given
         Employe employe = new Employe("Doe", "John", "T12345", null, 1500d, 1, 1.0);
 
@@ -67,7 +64,7 @@ public class EmployeTest {
             "2, 'T12345', 1.0, 0, 2300.0",
             "1, 'T12345', 1.0, 2, 1200.0"
     })
-    public void testGetPrimeAnnuelle(Integer performance, String matricule, Double tauxActivite,  Long nbAnneesAnciennetee, Double primeAttendue) {
+    void testGetPrimeAnnuelle(Integer performance, String matricule, Double tauxActivite,  Long nbAnneesAnciennetee, Double primeAttendue) {
         // Given
 
         Employe employe = new Employe("Doe", "John", matricule, LocalDate.now().minusYears(nbAnneesAnciennetee), 1500d, performance, tauxActivite);
@@ -81,7 +78,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testAugmenterSalaireBy3Percent() {
+    void testAugmenterSalaireBy3Percent() {
         Employe employe = new Employe("Doe", "John", "T12345", LocalDate.now(), 1500d, 1, 1.0);
 
         Double salaireExpected = employe.getSalaire() * 3/100 + employe.getSalaire();
@@ -91,7 +88,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testAugmenterSalaireBy0Percent() {
+    void testAugmenterSalaireBy0Percent() {
         Employe employe = new Employe("Doe", "John", "T12345", LocalDate.now(), 1500d, 1, 1.0);
 
         Double salaireBefore = employe.getSalaire();
@@ -101,7 +98,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testAugmenterSalaireByDot3Percent() {
+    void testAugmenterSalaireByDot3Percent() {
         Employe employe = new Employe("Doe", "John", "T12345", LocalDate.now(), 1500d, 1, 1.0);
 
         Double salaireExpected = employe.getSalaire() * 0.3/100 + employe.getSalaire();
@@ -112,7 +109,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testAugmenterSalaireByNegativePercent() {
+    void testAugmenterSalaireByNegativePercent() {
         Employe employe = new Employe("Doe", "John", "T12345", LocalDate.now(), 1500d, 1, 1.0);
 
         Double salaireBefore = employe.getSalaire();
@@ -126,7 +123,7 @@ public class EmployeTest {
 
 
 //    @Test
-//    public void testGetPrimeAnnuelleMatriculeNull() {
+//    void testGetPrimeAnnuelleMatriculeNull() {
 //        // Given
 //        Employe employe = new Employe("Doe", "John", null, null, 1500d, 1, 1.0);
 //
