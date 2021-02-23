@@ -7,14 +7,13 @@ import com.ipiecoles.java.java350.repository.EmployeRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.EntityExistsException;
 import java.time.LocalDate;
-import java.util.List;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -103,5 +102,56 @@ class EmployeServiceTest {
              Assertions.assertThat(e.getMessage()).isEqualTo("L'employé de matricule T00001 existe déjà en BDD");
              Mockito.verify(employeRepository, Mockito.never()).save(Mockito.any(Employe.class));
          }
-     }
+    }
+
+    @ParameterizedTest(name = "caTraite {0}, performanceCommercial {1}, performanceExpected {2}")
+    @CsvSource({
+            " 50, 2, 1", // Si le chiffre d'affaire est inférieur de plus de 20% à l'objectif fixé, le commercial retombe à la performance de base
+            " 90, 2, 1", // Si le chiffre d'affaire est inférieur entre 20% et 5% par rapport à l'ojectif fixé, il perd 2 de performance (dans la limite de la performance de base)
+            " 90, 5, 3", // Si le chiffre d'affaire est inférieur entre 20% et 5% par rapport à l'ojectif fixé, il perd 2 de performance (dans la limite de la performance de base)
+            " 101, 4, 4", // Si le chiffre d'affaire est entre -5% et +5% de l'objectif fixé, la performance reste la même.
+            " 110, 2, 3", // Si le chiffre d'affaire est supérieur entre 5 et 20%, il gagne 1 de performance
+            " 150, 5, 9" // Si le chiffre d'affaire est supérieur de plus de 20%, il gagne 4 de performance
+    })
+    void testCalculPerformanceCommercialPerfMoyenneIsHigher(Long caTraite, Integer performanceCommercial , Integer performanceExpected) throws EmployeException {
+        String matricule = "C12345";
+        Employe commercial = new Employe("Doe", "John", matricule, LocalDate.now(), 2000d, performanceCommercial, 1.0);
+        Long caObjectif = 100L;
+        Mockito.when(employeRepository.findByMatricule(matricule)).thenReturn(commercial);
+        Mockito.when(employeRepository.avgPerformanceWhereMatriculeStartsWith("C")).thenReturn(999999d);
+        Mockito.when(employeRepository.save(Mockito.any(Employe.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
+
+        employeService.calculPerformanceCommercial(matricule, caTraite, caObjectif);
+
+        ArgumentCaptor<Employe> commercialCaptor = ArgumentCaptor.forClass(Employe.class);
+        Mockito.verify(employeRepository).save(commercialCaptor.capture());
+        Employe commercialPerformanceUpdated = commercialCaptor.getValue();
+        Assertions.assertThat(commercialPerformanceUpdated.getPerformance()).isEqualTo(performanceExpected);
+    }
+
+    @ParameterizedTest(name = "caTraite {0}, performanceCommercial {1}, performanceExpected {2}")
+    @CsvSource({
+            " 50, 2, 1", // Si le chiffre d'affaire est inférieur de plus de 20% à l'objectif fixé, le commercial retombe à la performance de base
+            " 90, 2, 1", // Si le chiffre d'affaire est inférieur entre 20% et 5% par rapport à l'ojectif fixé, il perd 2 de performance (dans la limite de la performance de base)
+            " 90, 5, 4", // Si le chiffre d'affaire est inférieur entre 20% et 5% par rapport à l'ojectif fixé, il perd 2 de performance (dans la limite de la performance de base)
+            " 101, 4, 5", // Si le chiffre d'affaire est entre -5% et +5% de l'objectif fixé, la performance reste la même.
+            " 110, 2, 4", // Si le chiffre d'affaire est supérieur entre 5 et 20%, il gagne 1 de performance
+            " 150, 5, 10" // Si le chiffre d'affaire est supérieur de plus de 20%, il gagne 4 de performance
+    })
+    void testCalculPerformanceCommercialPerfMoyenneIsLower(Long caTraite, Integer performanceCommercial , Integer performanceExpected) throws EmployeException {
+        String matricule = "C12345";
+        Employe commercial = new Employe("Doe", "John", matricule, LocalDate.now(), 2000d, performanceCommercial, 1.0);
+        Long caObjectif = 100L;
+        Mockito.when(employeRepository.findByMatricule(matricule)).thenReturn(commercial);
+        Mockito.when(employeRepository.avgPerformanceWhereMatriculeStartsWith("C")).thenReturn(1d);
+        Mockito.when(employeRepository.save(Mockito.any(Employe.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
+
+        employeService.calculPerformanceCommercial(matricule, caTraite, caObjectif);
+
+        ArgumentCaptor<Employe> commercialCaptor = ArgumentCaptor.forClass(Employe.class);
+        Mockito.verify(employeRepository).save(commercialCaptor.capture());
+        Employe commercialPerformanceUpdated = commercialCaptor.getValue();
+        Assertions.assertThat(commercialPerformanceUpdated.getPerformance()).isEqualTo(performanceExpected);
+    }
+
 }

@@ -7,7 +7,9 @@ import com.ipiecoles.java.java350.model.NiveauEtude;
 import com.ipiecoles.java.java350.model.Poste;
 import com.ipiecoles.java.java350.repository.EmployeRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -24,7 +26,7 @@ class EmployeServiceIntegrationTest {
     EmployeRepository employeRepository;
 
     @Test
-    public void test() throws EmployeException {
+    void test() throws EmployeException {
         String nom = "Doe";
         String prenom = "John";
         Poste poste = Poste.TECHNICIEN;
@@ -44,6 +46,10 @@ class EmployeServiceIntegrationTest {
         Assertions.assertThat(employe.getMatricule()).isEqualTo("T00001");
     }
 
-
+    @BeforeEach
+    @AfterEach
+    public void purgeBDD() {
+        employeRepository.deleteAll();
+    }
 
 }
