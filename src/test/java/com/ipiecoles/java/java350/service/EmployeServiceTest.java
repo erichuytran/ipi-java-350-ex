@@ -161,6 +161,11 @@ class EmployeServiceTest {
 
         try {
             employeService.checkEnteringParams(matriculeNull, 1L, 1L);
+            Assertions.fail("checkEnteringParams aurait du lancer une exception");
+        } catch (EmployeException e) {
+            Assertions.assertThat(e.getMessage()).isEqualTo("Le matricule ne peut être null et doit commencer par un C !");
+        }
+        try {
             employeService.checkEnteringParams(matriculeNotC, 1L, 1L);
             Assertions.fail("checkEnteringParams aurait du lancer une exception");
         } catch (EmployeException e) {
@@ -175,6 +180,10 @@ class EmployeServiceTest {
 
         try {
             employeService.checkEnteringParams("C12345", caTraiteNull, 1L);
+            Assertions.fail("checkEnteringParams aurait du lancer une exception");
+        } catch (EmployeException e) {
+            Assertions.assertThat(e.getMessage()).isEqualTo("Le chiffre d'affaire traité ne peut être négatif ou null !");
+        }try {
             employeService.checkEnteringParams("C12345", caTraiteNegative, 1L);
             Assertions.fail("checkEnteringParams aurait du lancer une exception");
         } catch (EmployeException e) {
@@ -189,6 +198,11 @@ class EmployeServiceTest {
 
         try {
             employeService.checkEnteringParams("C12345", 1L, objectifCaNull);
+            Assertions.fail("checkEnteringParams aurait du lancer une exception");
+        } catch (EmployeException e) {
+            Assertions.assertThat(e.getMessage()).isEqualTo("L'objectif de chiffre d'affaire ne peut être négatif ou null !");
+        }
+        try {
             employeService.checkEnteringParams("C12345", 1L, objectifCaNegative);
             Assertions.fail("checkEnteringParams aurait du lancer une exception");
         } catch (EmployeException e) {
