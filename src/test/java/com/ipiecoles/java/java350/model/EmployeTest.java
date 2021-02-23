@@ -126,10 +126,12 @@ class EmployeTest {
             "2019, 8, 1",
             "2021, 10, 1",
             "2022, 10, 1",
+            "2026, 9, 1",
             "2032, 11, 1",
             "2019, 4, 0.5",
             "2021, 5, 0.5",
             "2022, 5, 0.5",
+            "2026, 5, 0.5",
             "2032, 6, 0.5"
     })
     void testGetNbRtt(Integer year, Integer nbDaysRttExpected, Double tempsPartiel) {
